@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SB Admin - Dashboard</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+  <!-- Page level plugin CSS-->
+  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js"></script>
+  <script src="http://d3js.org/d3.v2.min.js?2.9.3"></script>
+  <script src = "build_graph.js"></script>
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin.css" rel="stylesheet">
+
+</head>
+<style>
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.rolldown-list {
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+
+.rolldown-list a {
+  padding: 1em;
+  margin-bottom: .125em;
+  display: block;
+  list-style: none;
+}
+
+.rolldown-list a {
+  visibility: hidden;
+  animation: rolldown .7s 1;
+  transform-origin: 50% 0;
+  animation-fill-mode: forwards;
+}
+
+/* .rolldown-list a:nth-child(2n) {
+
+}
+
+.rolldown-list a:nth-child(2n+1) {
+  background-color: #333;
+} */
+
+#element1 {display:inline-block;}
+#element2 {display:inline-block; width:200px;}
+#myList {
+  position: absolute;
+}
+
+
+@keyframes rolldown {
+  0% {
+    visibility: visible;
+    transform: rotateX(180deg) perspective(500px);
+  }
+  70% {
+    visibility: visible;
+    transform: rotateX(-20deg);
+  }
+  100% {
+    visibility: visible;
+    transform: rotateX(0deg);
+  }
+}
+
+
+.element,
+.outer-container {
+  margin-left:14px;
+  width: 450px;
+  height: 330px;
+}
+.outer-container {
+  position: relative;
+  overflow: hidden;
+}
+.inner-container {
+  position: absolute;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-right: 150px;
+}
+.inner-container::-webkit-scrollbar {
+  display: none;
+}
+  .progress-bar {
+  width: 0;
+  animation: progress 1.5s ease-in-out forwards;
+
+  .title {
+    opacity: 0;
+    animation: show 0.35s forwards ease-in-out 0.5s;
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes show  {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+</style>
+
+<body id="page-top">
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+
+    <a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Navbar Search -->
+    <!-- <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form> -->
+
+    <!-- Navbar -->
+
+  </nav>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Pages</span>
+        </a>
+        <!-- <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+          <h6 class="dropdown-header">Login Screens:</h6>
+          <a class="dropdown-item" href="login.html">Login</a>
+          <a class="dropdown-item" href="register.html">Register</a>
+          <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Other Pages:</h6>
+          <a class="dropdown-item" href="404.html">404 Page</a>
+          <a class="dropdown-item" href="blank.html">Blank Page</a>
+        </div> -->
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Charts</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="tables.html">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Tables</span></a>
+      </li>
+    </ul>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active">Overview</li>
+        </ol>
+
+        <!-- Input Form -->
+
+        <div class="row" style="width:1400px;">
+
+            <!-- Time Navigation -->
+            <div class="col-xl-8 col-lg-7" id="timezone">
+              <div class="card shadow mb-4" style="width:980px!important; height:270px;!important; border-radius: 30px!important;">
+                  <h6 class="m-0 font-weight-bold text-dark" style="text-align:center; margin-top:20px!important; font-size:18px!important;">Topic Selector</h6>
+                  <hr width="70%" style="margin-left:150px;">
+                <div class="card-body" style="margin-top:-20px;">
+                  <div class="chart-area">
+                    <div class="row">
+                      <div class="custom-control custom-radio" style="margin:10px;">
+                          <input type="radio" class="custom-control-input" id="military1" name="defaultExampleRadios">
+                          <label class="custom-control-label font-weight-bold text-dark" for="military1">Military</label>
+                        </div>
+                        <div class="custom-control custom-radio" style="margin:10px;">
+                            <input type="radio" class="custom-control-input" id="military2" name="defaultExampleRadios">
+                            <label class="custom-control-label font-weight-bold text-dark" for="military2">Military.Combat</label>
+                          </div>
+                          <div class="custom-control custom-radio" style="margin:10px;">
+                              <input type="radio" class="custom-control-input" id="military3" name="defaultExampleRadios">
+                              <label class="custom-control-label font-weight-bold text-dark" for="military3">Military.Weapons</label>
+                            </div>
+                            <div class="custom-control custom-radio" style="margin:10px;">
+                                <input type="radio" class="custom-control-input" id="military4" name="defaultExampleRadios">
+                                <label class="custom-control-label font-weight-bold text-dark" for="military4">Military.Terrorism</label>
+                              </div>
+                              <div class="custom-control custom-radio" style="margin:10px;">
+                                  <input type="radio" class="custom-control-input" id="military5" name="defaultExampleRadios">
+                                  <label class="custom-control-label font-weight-bold text-dark" for="military5">Military.Ceasefire</label>
+                                </div>
+                      </div>
+
+                        <!-- Default checked -->
+                        <div class="row">
+                        <div class="custom-control custom-radio" style="margin:15px;">
+                          <input type="radio" class="custom-control-input" id="economics1" name="defaultExampleRadios" checked>
+                          <label class="custom-control-label font-weight-bold text-dark" for="economics1">Economics</label>
+                        </div>
+                        <div class="custom-control custom-radio" style="margin:15px;">
+                            <input type="radio" class="custom-control-input" id="economics2" name="defaultExampleRadios" checked>
+                            <label class="custom-control-label font-weight-bold text-dark" for="economics2">Economics.Trade</label>
+                          </div>
+                          <div class="custom-control custom-radio" style="margin:15px;">
+                              <input type="radio" class="custom-control-input" id="economics3" name="defaultExampleRadios" checked>
+                              <label class="custom-control-label font-weight-bold text-dark" for="economics3">Economics.Finance</label>
+                            </div>
+                            <div class="custom-control custom-radio" style="margin:15px;">
+                                <input type="radio" class="custom-control-input" id="economics4" name="defaultExampleRadios" checked>
+                                <label class="custom-control-label font-weight-bold text-dark" for="economics4">Economics.Tax</label>
+                              </div>
+                              <div class="custom-control custom-radio" style="margin:15px;">
+                                  <input type="radio" class="custom-control-input" id="economics5" name="defaultExampleRadios" checked>
+                                  <label class="custom-control-label font-weight-bold text-dark" for="economics5">Economics.Welfare</label>
+                                </div>
+
+                      </div>
+                      <div class="row">
+                        <div class="custom-control custom-radio" style="margin:15px;">
+                            <input type="radio" class="custom-control-input" id="politics1" name="defaultExampleRadios" checked>
+                            <label class="custom-control-label font-weight-bold text-dark" for="politics1">Politics</label>
+                          </div>
+                          <div class="custom-control custom-radio" style="margin:15px;">
+                              <input type="radio" class="custom-control-input" id="politics2" name="defaultExampleRadios" checked>
+                              <label class="custom-control-label font-weight-bold text-dark" for="politics2">Politics.Justice</label>
+                            </div>
+                            <div class="custom-control custom-radio" style="margin:15px;">
+                                <input type="radio" class="custom-control-input" id="politics3" name="defaultExampleRadios" checked>
+                                <label class="custom-control-label font-weight-bold text-dark" for="politics3">Politics.Election</label>
+                              </div>
+                              <div class="custom-control custom-radio" style="margin:15px;">
+                                  <input type="radio" class="custom-control-input" id="politics4" name="defaultExampleRadios" checked>
+                                  <label class="custom-control-label font-weight-bold text-dark" for="politics4">Politics.International_Relation</label>
+                                </div>
+                                <div class="custom-control custom-radio" style="margin:15px;">
+                                    <input type="radio" class="custom-control-input" id="politics5" name="defaultExampleRadios" checked>
+                                    <label class="custom-control-label font-weight-bold text-dark" for="politics5">Politics.Governance</label>
+                                  </div>
+
+
+
+                        </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        <form>
+          <div class="row" style="margin-bottom: 15px; margin-right: 1px;">
+
+            <div class="col">
+              <input type="text" class="form-control" id="cityinput" placeholder="City Name">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" id="timeinput" placeholder="Time">
+            </div>
+
+            <button type="button" class="btn btn-primary btn-email waves-light" id="updatebutton" onclick="maketree()">Update</button>
+          </div>
+
+        </form>
+        <div class="row">
+        <div class="col-lg-6 mb-4" id = "piechartgroup" style="width:700px!important; ">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4" style="border-radius:30px; width:490px; height:370px;" id="node">
+              <!-- <div class="card-header py-3"> -->
+                <!-- <h6 class="m-0 font-weight-bold text-primary" style="text-align:center; margin-top:20px!important; font-size: 18px!important;">Pie Chart Visualization</h6>
+                <hr width="70%" style="margin-left:70px;"> -->
+              <!-- </div> -->
+              <div class="card-body" >
+                  <!-- <div class="card-header font-weight-bold" style="border-radius:25px; background-color:white; font-size:18px!important">
+                      <!-- <i class="fas font-weight-bold text-dark"></i> -->
+
+                         <h6 class="m-0 font-weight-bold text-dark" style="text-align:center;margin-top:0px!important; font-size: 18px;">Pie Chart</h6>
+                         <hr width="70%" style="margin-left:60px;">
+                    <div class="card-body" style="height:100px; width:270px;margin-left:-20px; margin-top:20px;" id = "chart1">
+
+                      <!-- <canvas id="myAreaChart" width="100%" height="30"></canvas> -->
+                      <script src="build_graph.js"></script>
+                    </div>
+
+                    <!-- <div class="card-footer small text-muted"></div> -->
+
+
+
+              </div>
+
+
+            </div>
+
+
+
+          </div>
+          <div class="col-lg-6 mb-4">
+
+             <!-- Illustrations -->
+             <div class="card shadow mb-4" style="border-radius:30px; height:520px!important;" id="papers">
+
+                 <h6 class="m-0 font-weight-bold text-dark" style="text-align:center;margin-top:20px!important; font-size: 18px;">Paper Details</h6>
+                 <hr width="70%" style="margin-left:60px;">
+               <div class="outer-container" style="height:500px;">
+                   <div class="inner-container" style="height:430px!important;">
+                     <div class="element">
+                         <ul class="list-group rolldown-list" style="margin-left:10px!important;height:70px!important;" id="myList">
+                           </ul>
+
+                     </div>
+                   </div>
+                 </div>
+             </div>
+
+           </div>
+        </div>
+
+
+          <div class="col-lg-6 mb-4" id = "linechartgroup" style="width:700px!important; ">
+
+              <!-- Project Card Example -->
+              <div class="card shadow mb-4" style="border-radius:30px; width:640px; height:600px;">
+                <!-- <div class="card-header py-3"> -->
+                  <!-- <h6 class="m-0 font-weight-bold text-primary" style="text-align:center; margin-top:20px!important; font-size: 18px!important;">Pie Chart Visualization</h6>
+                  <hr width="70%" style="margin-left:70px;"> -->
+                <!-- </div> -->
+
+                <div class="card-body" >
+                    <!-- <div class="card-header" style="border-radius:25px; background-color:white;">
+                        <i class="fas fa-chart-area"></i>
+                        Line Chart</div> -->
+                        <h6 class="m-0 font-weight-bold text-dark" style="text-align:center; font-size: 18px;">Line Chart</h6>
+                        <hr width="70%" style="margin-left:90px;">
+
+                        <div class="container">
+                            <div class="row">
+
+
+                            </div>
+                        </div>
+                      <div class="card-body" style="height:500px; width:600px;margin-left:-20px; margin-top:20px;" id = "linechart">
+
+                        <!-- <canvas id="myAreaChart" width="100%" height="30"></canvas> -->
+                        <!-- <script src="build_graph.js"></script> -->
+                      </div>
+                      <!-- <div class="card-footer small text-muted"></div> -->
+
+
+
+                </div>
+              </div>
+
+            </div>
+        <!-- Area Chart Example-->
+        <!-- <div class="card mb-3">
+          <div class="card-header">
+            <i class="fas fa-chart-area"></i>
+            Area Chart Example</div>
+          <div class="card-body" style="height:300px; width:450px;" id = "chart1">
+
+            <!-- <canvas id="myAreaChart" width="100%" height="30"></canvas> -->
+            <!-- <script src="build_graph.js"></script>
+          </div>
+          <div class="card-footer small text-muted"></div>
+        </div> -->
+
+        <!-- DataTables Example -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fas fa-table"></i>
+            Data Table Example</div>
+          <div class="card-body">
+            <div class="table-responsive">
+
+            </div>
+          </div>
+          <div class="card-footer small text-muted"></div>
+        </div>
+
+      </div>
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <footer class="sticky-footer">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright © Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+    <!-- /.content-wrapper -->
+<div id="Modal_group"></div>
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
+
+  <!-- Demo scripts for this page-->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script src="js/demo/chart-area-demo.js"></script>
+
+</body>
+
+</html>
